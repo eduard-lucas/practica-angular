@@ -1,0 +1,34 @@
+<p>dashboard-layout works!</p>
+<div class="d-flex" style="min-height: 100vh;">
+  
+  <div class="bg-dark text-white p-3" style="width: 250px;">
+    <h4 class="text-center mb-4">SISTEMA</h4>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item mb-2">
+        <a routerLink="/dashboard" class="nav-link text-white" 
+        routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          📊 Inicio
+        </a>
+      </li>
+      <li class="nav-item mb-2">
+        <a routerLink="/dashboard/lineas-negocio" class="nav-link text-white" 
+        routerLinkActive="active">
+          🛠️ Líneas de Negocio
+        </a>
+      </li>
+      <li>
+        <a routerLink="/dashboard/usuarios" routerLinkActive="active" class="nav-link text-white">
+          👥 Gestión de Usuarios
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <button class="btn btn-danger w-100 btn-sm" (click)="ejecutarDeslogueo()">🚪 Cerrar Sesión</button>
+  </div>
+
+  <div class="flex-grow-1 bg-light p-4">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

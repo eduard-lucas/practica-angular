@@ -1,0 +1,224 @@
+<!--div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🛠️ Gestión de Líneas de Negocio</h2>
+    <button class="btn btn-primary">➕ Nueva Línea</button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col" style="width: 10%">ID</th>
+            <th scope="col" style="width: 30%">Nombre</th>
+            <th scope="col" style="width: 40%">Descripción</th>
+            <th scope="col" style="width: 20%" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="listaLineas.length === 0 && !errorMessage">
+            <td colspan="4" class="text-center text-muted py-4">
+              No hay líneas de negocio registradas o cargando datos...
+            </td>
+          </tr>
+
+          <tr *ngIf="listaLineas.length > 0" *ngFor="let linea of listaLineas">
+            <td><strong>#{{ linea.id }}</strong></td>
+            <td>{{ linea.nombre }}</td>
+            <td>{{ linea.descripcion || 'Sin descripción' }}</td>
+            <td class="text-center">
+              <button class="btn btn-warning btn-sm me-2">✏️ Editar</button>
+              <button class="btn btn-danger btn-sm">🗑️ Borrar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div-->
+
+<!--div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🛠️ Gestión de Líneas de Negocio</h2>
+    <button class="btn btn-primary">➕ Nueva Línea</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col" style="width: 10%">ID</th>
+            <th scope="col" style="width: 30%">Nombre</th>
+            <th scope="col" style="width: 40%">Descripción</th>
+            <th scope="col" style="width: 20%" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (listaLineas.length === 0 && !errorMessage) {
+            <tr>
+              <td colspan="4" class="text-center text-muted py-4">
+                No hay líneas de negocio registradas o cargando datos...
+              </td>
+            </tr>
+          }
+
+          @for (linea of listaLineas; track linea.id) {
+            <tr>
+              <td><strong>#{{ linea.id }}</strong></td>
+              <td>{{ linea.nombre }}</td>
+              <td>{{ linea.descripcion || 'Sin descripción' }}</td>
+              <td class="text-center">
+                <button class="btn btn-warning btn-sm me-2">✏️ Editar</button>
+                <button class="btn btn-danger btn-sm">🗑️ Borrar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div-->
+
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🛠️ Gestión de Líneas de Negocio</h2>
+    <button class="btn btn-primary" (click)="abrirModalCrear()">➕ Nueva Línea</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <div class="row mb-3">
+  <div class="col-md-4">
+    <div class="input-group">
+      <span class="input-group-text">🔍</span>
+      <input  type="text" class="form-control"  placeholder="Buscar línea de negocio por nombre..." 
+        [(ngModel)]="txtBuscar" (ngModelChange)="onBuscar($event)"
+      />
+    </div>
+  </div>
+</div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col" style="width: 10%">ID</th>
+            <th scope="col" style="width: 30%">Nombre</th>
+            <th scope="col" style="width: 40%">Descripción</th>
+            <th scope="col" style="width: 20%" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (listaLineas.length === 0 && !errorMessage) {
+            <tr>
+              <td colspan="4" class="text-center text-muted py-4">
+                No hay líneas de negocio registradas o cargando datos...
+              </td>
+            </tr>
+          }
+
+          @for (linea of listaLineas; track linea.id) {
+            <tr>
+              <td><strong>#{{ linea.id }}</strong></td>
+              <td>{{ linea.nombre }}</td>
+              <td>{{ linea.descripcion || 'Sin descripción' }}</td>
+              <td class="text-center">
+                <button class="btn btn-warning btn-sm me-2" (click)="abrirModalEditar(linea)">✏️ Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="eliminarLinea(linea.id)">🗑️ Borrar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+@if (isModalOpen) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title">✏️ Editar Línea de Negocio #{{ lineaSeleccionada.id }}</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal()" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+          <form (ngSubmit)="guardarCambios()">
+            
+            <div class="mb-3">
+              <label class="form-label fw-bold">Nombre de la Línea</label>
+              <input type="text" class="form-control" name="nombre" [(ngModel)]="lineaSeleccionada.nombre" required />
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label fw-bold">Descripción</label>
+              <textarea class="form-control" rows="3" name="descripcion" [(ngModel)]="lineaSeleccionada.descripcion"></textarea>
+            </div>
+
+            <div class="modal-footer px-0 pb-0 pt-3">
+              <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+              <button type="submit" class="btn btn-success">Guardar Cambios</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}
+
+
+@if (isCreateModalOpen) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">➕ Registrar Nueva Línea de Negocio</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarModalCrear()"></button>
+        </div>
+        
+        <div class="modal-body">
+          <form (ngSubmit)="ejecutarCreacion()">
+            
+            <div class="mb-3">
+              <label class="form-label fw-bold">Nombre de la Línea</label>
+              <input type="text" class="form-control" name="nuevoNombre" [(ngModel)]="nuevaLinea.nombre" placeholder="Ej: Consultoría TI" required />
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label fw-bold">Descripción</label>
+              <textarea class="form-control" rows="3" name="nuevaDescripcion" [(ngModel)]="nuevaLinea.descripcion" placeholder="Escribe un breve resumen de las actividades..."></textarea>
+            </div>
+
+            <div class="modal-footer px-0 pb-0 pt-3">
+              <button type="button" class="btn btn-secondary" (click)="cerrarModalCrear()">Cancelar</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!nuevaLinea.nombre">Guardar Registro</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}
