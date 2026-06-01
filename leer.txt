@@ -13,6 +13,17 @@ echo -e "node_modules/\n/dist/\n.angular/" > .gitignore
 cd "C:\Users\User\Desktop\estudios\jonmircha\p1Vimatica"
 
 git add .
+git commit -m "feat: estructura completa del proyecto viamatica"
+git branch -M main
+git remote add origin https://github.com/eduard-lucas/practica-angular
+
+
+rm -rf frontend/.git
+git rm --cached frontend
+git add frontend
+git commit -m "fix: cargar archivos completos de angular"
+git push origin main
+
 */
 
 proyecto-fullstack/
