@@ -1,0 +1,254 @@
+/*
+{
+  "email": "admin@correo.com",
+  "password": "admin123"
+}
+git init
+cd "C:\Users\User\Desktop\estudios\jonmircha\p1Vimatica\backend"
+echo -e "node_modules/\n.env\n*.log" > .gitignore
+
+cd "C:\Users\User\Desktop\estudios\jonmircha\p1Vimatica\frontend"
+echo -e "node_modules/\n/dist/\n.angular/" > .gitignore
+
+cd "C:\Users\User\Desktop\estudios\jonmircha\p1Vimatica"
+
+git add .
+git commit -m "feat: estructura completa del proyecto viamatica"
+git branch -M main
+git remote add origin https://github.com/eduard-lucas/practica-angular
+
+
+rm -rf frontend/.git
+git rm --cached frontend
+git add frontend
+git commit -m "fix: cargar archivos completos de angular"
+git push origin main
+
+git rm -r --cached .
+git add .
+git commit -m "chore: corregir gitignore y limpiar node_modules del rastreo"
+git push origin main --force
+
+*/
+
+proyecto-fullstack/
+│
+├── backend/                             # --- SERVIDOR NODE.JS ---
+│   ├── config/                          # Configuración de variables de entorno y BD
+│   │   └── db.js                        # Conexión a SQL Server
+│   ├── controllers/                     # Capturan la petición y envían la respuesta
+│   │   ├── authController.js            # Login de usuarios
+│   │   ├── userController.js            # CRUD de usuarios
+│   │   ├── lineaNegocioController.js    # CRUD de líneas de negocio
+│   │   └── errorController.js           # Manejo de rutas 404
+│   ├── helpers/                         # Funciones utilitarias reutilizables
+│   │   └── jwtHelper.js                 # Generar y verificar los tokens (pulseras)
+│   ├── middlewares/                     # Guardianes del backend (seguridad)
+│   │   └── authMiddleware.js            # Bloquea rutas de Node si no hay JWT válido
+│   ├── services/                        # Lógica de negocio pura (Consultas SQL)
+│   │   ├── userService.js               # Consultas de usuarios a la BD
+│   │   └── lineaNegocioService.js       # Consultas de líneas de negocio a la BD
+│   ├── .env                             # Archivo secreto (credenciales de BD, llaves)
+│   ├── app.js                           # Archivo principal de Express (Configuración)
+│   └── package.json                     # Dependencias del servidor
+│
+└── frontend/                            # --- CLIENTE ANGULAR 17 ---
+    ├── src/
+    │   ├── app/
+    │   │   ├── core/                    # Lo que se carga una sola vez (Guardias, Interceptores, Servicios)
+    │   │   │   ├── guards/
+    │   │   │   │   └── auth.guard.ts    # Protege las rutas visuales de Angular
+    │   │   │   ├── interceptors/
+    │   │   │   │   └── auth.interceptor.ts # Pega el JWT automáticamente en cada petición
+    │   │   │   └── services/
+    │   │   │       ├── auth.service.ts  # Servicio para login
+    │   │   │       ├── user.service.ts  # Servicio para CRUD usuarios
+    │   │   │       └── linea.service.ts # Servicio para CRUD líneas de negocio
+    │   │   │
+    │   │   ├── features/                # Módulos o Pantallas de la aplicación
+    │   │   │   ├── auth/                # Pantalla de Login
+    │   │   │   │   └── login/
+    │   │   │   ├── catalogo/            # Pantalla Pública (Líneas de negocio con buscador)
+    │   │   │   │   └── catalogo-list/
+    │   │   │   └── admin/               # Panel Administrativo Protegido
+    │   │   │       ├── user-crud/       # CRUD Usuarios
+    │   │   │       └── linea-crud/      # CRUD Líneas de Negocio
+    │   │   │
+    │   │   ├── app.component.ts         # Componente raíz
+    │   │   ├── app.config.ts            # Configuración global (Rutas, HttpClient)
+    │   │   └── app.routes.ts            # Definición de enlaces (/login, /admin, etc.)
+    │   └── index.html
+    ├── package.json                     # Dependencias de Angular
+    └── angular.json                     # Configuración del CLI de Angular
+
+
+
+
+====================================================================
+Paso A: Configurar el Backend (Node.js)
+Abre tu terminal, crea la carpeta raíz y entra a la subcarpeta backend:
+
+====================================================================
+backENd
+Bash
+mkdir proyecto-fullstack
+cd proyecto-fullstack
+mkdir backend
+cd backend
+====================================================================
+Bash
+npm install express cors helmet morgan jsonwebtoken bcryptjs mssql dotenv
+npm install -D nodemon
+
+
+====================================================================Angular
+npx @angular/cli@17 new frontend --standalone --routing
+npm install bootstrap
+
+ng g c components/lineas-visor
+ng g c components/dashboard-layout
+ng g c components/inicio-resumen
+ng g c components/lineas-gestion
+ng g c components/usuarios-lista
+ng g c components/usuario-form
+ng g s services/lineas
+ng g s services/usuarios
+ng g g guards/auth --type=canActivate
+
+📂 mi-proyecto-angular/
+└── 📂 src/
+    └── 📂 app/
+        ├── 📄 app.config.ts                <- (Ya existe, lo vamos a modificar)
+        ├── 📄 app.routes.ts                <- (Ya existe)
+        ├── 📄 app.component.ts             <- (Ya existe)
+        ├── 📂 interceptors/                <- (Carpetas que crearemos)
+        │   └── 📄 auth.interceptor.ts
+        ├── 📂 services/
+        │   └── 📄 auth.service.ts
+        └── 📂 components/
+            └── 📂 login/
+                ├── 📄 login.component.ts
+                └── 📄 login.component.html
+---------------------------------------------
+src/app/components/
+├── dashboard-layout/
+├── inicio-resumen/
+├── lineas-gestion/
+└── lineas-visor/
+
+
+
+
+
+--================================================================C#
+📁 TuProyectoAPI
+├── 📁 Controllers       <-- [CAPA PRESENTACIÓN] (Tus endpoints)
+│   └── LineasController.cs
+├── 📁 Services          <-- [CAPA DE NEGOCIO] (Lógica y LINQ)
+│   ├── ILineaService.cs
+│   └── LineaService.cs
+├── 📁 Data              <-- [CAPA ACCESO A DATOS] (DbContext)
+│   └── AppDbContext.cs
+├── 📁 Models            <-- [ENTIDADES DE BASE DE DATOS]
+│   └── LineaNegocio.cs
+├── appsettings.json     <-- Cadena de conexión
+└── Program.cs           <-- Configuración global (.NET 6)
+
+
+enConsole
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 6.0.25
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.25
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 6.0.25
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 6.0.25
+dotnet add package BCrypt.Net-Next
+dotnet new gitignore
+
+Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 6.0.25
+Install-Package Microsoft.EntityFrameworkCore.Design -Version 6.0.25
+Install-Package Microsoft.EntityFrameworkCore.Tools -Version 6.0.25
+Install-Package Microsoft.AspNetCore.Authentication.JwtBearer -Version 6.0.25
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------
+Aquí tienes el cuestionario de preguntas y respuestas estructurado técnicamente. Está diseñado en un formato limpio para que puedas seleccionarlo todo, copiarlo y pegarlo en Word o Google Docs, y luego guardarlo directamente como **PDF** (yendo a *Archivo > Guardar como > PDF* o *Imprimir > Guardar como PDF*).
+
+Cada respuesta incluye la **definición técnica** que espera escuchar el entrevistador y un **"As bajo la manga"**, que es la justificación práctica basada en el sistema CRUD de usuarios y líneas de negocio que acabas de implementar.
+
+---
+
+# GUÍA DE PREPARACIÓN TÉCNICA: NODE.JS & ANGULAR
+
+## BLOQUE 1: ARQUITECTURA BACKEND (NODE.JS, EXPRESS Y SQL SERVER)
+
+### PREGUNTA 1: ¿Cuál es la diferencia entre CommonJS y ES Modules en Node.js, y cuál utilizó en su proyecto?
+
+* **Respuesta Técnica:** CommonJS es el sistema de módulos tradicional de Node.js que utiliza `require()` y `module.exports` de forma síncrona. ES Modules (ECMAScript Modules) es el estándar moderno y nativo de JavaScript que utiliza `import` y `export` de forma asíncrona.
+* **Tu As bajo la manga:** *"En mi backend utilicé **ES Modules** activándolo con `"type": "module"` en el `package.json`. Esto me permite mantener una sintaxis moderna y limpia, idéntica a la que utilizo en el frontend con Angular, facilitando la mantenibilidad del código."*
+
+### PREGUNTA 2: ¿Por qué es vital parametrizar las consultas SQL (usando `.input()`) y qué tipo de vulnerabilidad previene?
+
+* **Respuesta Técnica:** Sirve para separar estrictamente las instrucciones de código SQL de los datos proporcionados por el usuario. Previene la vulnerabilidad de **Inyección SQL (SQL Injection)**, donde un atacante intenta inyectar comandos maliciosos a través de campos de texto.
+* **Tu As bajo la manga:** *"En mi servicio de líneas de negocio, al buscar por ID, utilicé `.input('idParam', mssql.Int, id)` antes del query `WHERE Id = @idParam`. De este modo, SQL Server trata el parámetro estrictamente como un valor numérico y nunca como código ejecutable, blindando la base de datos."*
+
+### PREGUNTA 3: ¿Cómo estructuró las capas de su aplicación en Node.js/Express?
+
+* **Respuesta Técnica:** Se utiliza el patrón de diseño de **Arquitectura en Capas** para garantizar el principio de responsabilidad única. Las capas principales son: Rutas (Endpoints), Middlewares (Lógica intermedia), Controladores (Manejo de peticiones/respuestas HTTP) y Servicios (Acceso a datos y lógica de negocio).
+* **Tu As bajo la manga:** *"Mi backend no mezcla código. Las **Rutas** definen los accesos; los **Middlewares** interceptan y validan la seguridad; los **Controladores** reciben el `req` y `res` para gestionar los estados HTTP (200, 400, 500); y los **Servicios** se encargan exclusivamente de conectarse con el pool de SQL Server."*
+
+---
+
+## BLOQUE 2: SEGURIDAD, AUTENTICACIÓN Y JWT
+
+### PREGUNTA 4: ¿Qué es JWT (JSON Web Token) y qué significa que sea una arquitectura *Stateless* (sin estado)?
+
+* **Respuesta Técnica:** JWT es un estándar abierto para transmitir información de forma segura entre partes como un objeto JSON, firmado digitalmente. Es *Stateless* porque el servidor no almacena sesiones en memoria RAM ni en bases de datos; la validez del acceso se determina descifrando y verificando la firma del token con una clave secreta en cada petición.
+* **Tu As bajo la manga:** *"Al usar JWT, mi API de Express es altamente escalable. No guardo sesiones en el servidor. Cuando el usuario hace login, firmo el token con `process.env.JWT_SECRET`. En cada petición protegida, el servidor solo verifica matemáticamente que el token sea auténtico y vigente."*
+
+### PREGUNTA 5: Si un token expira (Error: `TokenExpiredError`), ¿cuál es el flujo correcto de manejo en el Backend y en el Frontend?
+
+* **Respuesta Técnica:** El backend debe interceptar la expiración dentro del bloque `try/catch` de su verificación y responder inmediatamente con un código de estado **403 Forbidden** o **401 Unauthorized**. El frontend debe capturar ese estado HTTP, destruir el token almacenado y redirigir al usuario al login.
+* **Tu As bajo la manga:** *"En mi middleware `verificarToken`, si `jwt.verify()` lanza un `TokenExpiredError`, el `catch` responde con un `403` y un JSON aclarando que la sesión expiró. Esto evita que peticiones sin vigencia ejecuten controladores o consultas a la base de datos."*
+
+---
+
+## BLOQUE 3: FRONTEND MODERNO (ANGULAR 17+)
+
+### PREGUNTA 6: ¿Qué es un HTTP Interceptor en Angular y cuál es su utilidad en entornos reales?
+
+* **Respuesta Técnica:** Es una característica avanzada de Angular que permite interceptar peticiones HTTP salientes y respuestas entrantes de forma global y centralizada. Se utiliza principalmente para inyectar cabeceras de autenticación y para capturar errores de manera uniforme.
+* **Tu As bajo la manga:** *"En lugar de adjuntar manualmente el `Authorization: Bearer` en cada método de mis servicios, en entornos de producción se implementa un `HttpInterceptor`. Este toma el token del `localStorage`, lo inyecta en cada petición saliente y, si el backend responde con un 401 o 403, redirige automáticamente al flujo de Login de forma centralizada."*
+
+### PREGUNTA 7: Al implementar la edición en un formulario, ¿cómo captura parámetros dinámicos desde la URL en Angular?
+
+* **Respuesta Técnica:** Se utiliza el servicio inyectable **`ActivatedRoute`**, accediendo a la propiedad `snapshot.paramMap.get('id')` para leer el parámetro definido en el enrutador. Este proceso debe realizarse dentro del ciclo de vida **`ngOnInit`**.
+* **Tu As bajo la manga:** *"Para el componente `UsuarioFormComponent`, configuré la ruta hija como `editar/:id`. En el `ngOnInit`, utilizo `this.route.snapshot.paramMap.get('id')`. Si existe, sé que el componente está en modo edición (`isEditMode = true`) y procedo a llamar al servicio para precargar los datos del usuario desde SQL Server."*
+
+### PREGUNTA 8: ¿Qué es una fuga de memoria (Memory Leak) con RxJS en Angular y cómo se controla?
+
+* **Respuesta Técnica:** Ocurre cuando un componente se suscribe (`.subscribe()`) a un Observable continuo de larga duración y el componente es destruido, pero la suscripción permanece activa en la memoria RAM del navegador. Se controla desuscribiéndose explícitamente en el ciclo de vida `ngOnDestroy`, o utilizando operadores de RxJS como `take(1)`, `first()` o el pipe `async` en el HTML.
+* **Tu As bajo la manga:** *"Para peticiones HTTP estándar a APIs de Node, la suscripción se autocompleta tras recibir la respuesta del servidor (el JSON). Sin embargo, como buena práctica en componentes complejos, utilizo operadores como `take(1)` para asegurar que la suscripción se destruya inmediatamente después de recibir los datos, garantizando un rendimiento óptimo de la aplicación."*
+
+---
+
+### 💡 Consejo final para tu prueba:
+
+Cuando te pregunten algo, mantén la calma y estructura tu respuesta en dos partes: **Primero**, dales la teoría directa y corta. **Segundo**, diles: *"Por ejemplo, en el desarrollo que realicé de la sección de usuarios..."* y cuéntales cómo aplicaste esa teoría. Esto demostrará que dominas los conceptos y que tienes experiencia práctica real escribiendo código estructurado. ¡Mucho éxito en tu proceso con Viamática!
