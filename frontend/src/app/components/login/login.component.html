@@ -1,0 +1,78 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card p-4 shadow-sm" style="width: 100%; max-width: 400px;">
+    <h3 class="text-center mb-4">Iniciar Sesión</h3>
+    
+    <form (ngSubmit)="onLogin()">
+      <div class="mb-3">
+        <label class="form-label">Correo Electrónico</label>
+        <input type="email" name="email" [(ngModel)]="credenciales.email" class="form-control" placeholder="admin@correo.com" required>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Contraseña</label>
+        <input type="password" name="password" [(ngModel)]="credenciales.password" class="form-control" placeholder="••••••••" required>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger p-2 text-center small">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-2">Ingresar al Sistema</button>
+    </form>
+  </div>
+</div>
+
+<!--
+<div class="container-fluid d-flex justify-content-center align-items-center bg-light" style="min-height: 100vh;">
+  
+  <div class="card p-4 shadow border-0 rounded-3" style="width: 100%; max-width: 420px;">
+    
+    <div class="text-center mb-4">
+      <div class="bg-primary text-white d-inline-block rounded-circle p-3 mb-2 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+        </svg>
+      </div>
+      <h3 class="fw-bold text-secondary m-0">Control de Accesos</h3>
+      <small class="text-muted">Ingresa tus credenciales administrativas</small>
+    </div>
+    
+    <form (ngSubmit)="onLogin()">
+      
+      <div class="mb-3">
+        <label class="form-label text-secondary fw-semibold">Correo Electrónico</label>
+        <input 
+          type="email" 
+          name="email" 
+          [(ngModel)]="email" 
+          class="form-control p-2.5" 
+          placeholder="admin@correo.com" 
+          required>
+      </div>
+      
+      <div class="mb-4">
+        <label class="form-label text-secondary fw-semibold">Contraseña</label>
+        <input 
+          type="password" 
+          name="password" 
+          [(ngModel)]="password" 
+          class="form-control p-2.5" 
+          placeholder="••••••••" 
+          required>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center p-2 small mb-3 border-0 rounded-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+        <div>{{ errorMessage }}</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 p-2.5 fw-bold shadow-sm rounded-3">
+        Iniciar Sesión
+      </button>
+      
+    </form>
+  </div>
+</div>
+-->
